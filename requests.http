@@ -1,0 +1,68 @@
+# примеры API-запросов
+
+@baseUrl = http://0.0.0.0:8080
+@username = user_11
+@password = enter_your_password
+
+###
+
+#Cоздание пользователя
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+    "name": "{{username}}",
+    "password": "{{password}}"
+}
+
+###
+
+#Получение токена
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "name": "{{username}}",
+    "password": "{{password}}"
+}
+
+###
+#укажиите полученное значение токена в переменной token
+@token = укажите тут токен, полученный на предыдущем шаге
+###
+
+# создание объявления
+POST {{baseUrl}}/adv
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Продаю Помидор",
+    "description": "Лучшие помидоры в мире"
+}
+
+###
+
+# получение объявления по его ID
+GET {{baseUrl}}/advs/1
+Content-Type: application/json
+
+###
+
+#изменение объявления
+PATCH {{baseUrl}}/advs/2
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "Продам огурцы",
+    "description": "Самые свежие огурцы на свете"
+}
+
+###
+
+#удаление объявления
+DELETE {{baseUrl}}/advs/2
+Authorization: Bearer {{token}}
+
+
