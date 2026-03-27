@@ -58,13 +58,21 @@ PROJECT_NAME-app - контейнер с aiohttp сервером
 После успешного запуска контейнеров выполните клиентский скрипт:
 
 ```bash
-python client.py
+docker-compose exec PROJECT_NAME-app python client.py
 ```
 
 Или, если используете Python 3:
 
 ```bash
-python3 client.py
+docker-compose exec PROJECT_NAME-app python3 client.py
 ```
 
 Результат выполнения отобразится в терминале.
+
+### 5. Остановка контейнеров
+
+После проверки работы, остановите контейнеры
+
+```bash
+docker-compose down -v
+```
