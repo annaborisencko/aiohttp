@@ -1,5 +1,6 @@
 services:
   db:
+    container_name: ${PROJECT_NAME}-db
     image: postgres:14.3-alpine3.15
     ports:
       - "5431:5432"
@@ -8,4 +9,31 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_POSRT: ${POSTGRES_PORT}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+  aiohttp_app:
+      build: .
+      container_name: ${PROJECT_NAME}-app
+      env_file:
+        - .env
+      depends_on:
+        db:
+          condition: service_healthy
+          restart: True
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+        interval: 1m30s
+        timeout: 30s
+        retries: 5
+        start_period: 30s
+
+networks:
+  aiohttp-network:
+    driver: bridge
+    name: ${PROJECT_NAME}-network
