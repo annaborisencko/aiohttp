@@ -16,8 +16,8 @@
 ### 1. Клонирование репозитория
 
 ```bash
-git clone <url-вашего-репозитория>
-cd <название-папки-проекта>
+git clone https://github.com/annaborisencko/aiohttp.git
+cd aiohttp
 ```
 
 ### 2. Настройка переменных окружения
