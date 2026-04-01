@@ -151,7 +151,6 @@ class UserView(web.View):
         if "password" in json_data:
             user.password = hash_password(json_data["password"])
 
-        # await add_user(self.session, user)
         await self.session.commit()
         return json_response(user.id_dict)
 
@@ -210,7 +209,6 @@ class AdvView(web.View):
         if "description" in json_data:
             adv.description = json_data["description"]
 
-        # await add_adv(self.session, adv)
         await self.session.commit()
         return json_response(adv.id_dict)
 
@@ -251,7 +249,6 @@ class LoginView(web.View):
         token = generate_token(user.id)
 
         return json_response({"token": token, "token_type": "Bearer"})
-
 
 app.add_routes(
     [
