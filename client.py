@@ -162,5 +162,30 @@ async def main():
 
         #################################################
 
+        print("##### Получаем токен для неизвестного пользователя ######")
+
+        response = await session.post(
+            "http://0.0.0.0:8080/login",
+            json={"name": f"wrong_{username_1}", "password": password_1},
+        )
+
+        json_response = await response.json()
+        token_2 = json_response.get("token")
+        print(response.status, "\n")
+
+        #################################################
+
+        print("##### Получаем токен для пользователя с неправильным паролем ######")
+
+        response = await session.post(
+            "http://0.0.0.0:8080/login",
+            json={"name": username_1, "password": f"wrong_{password_1}"},
+        )
+
+        json_response = await response.json()
+        token_2 = json_response.get("token")
+        print(response.status, "\n")
+
+        #################################################
 
 asyncio.run(main())
