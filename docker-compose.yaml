@@ -27,7 +27,7 @@ services:
           condition: service_healthy
           restart: True
       healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+        test: ["CMD", "curl", "-f", "http://localhost:8080/"]
         interval: 1m30s
         timeout: 30s
         retries: 5

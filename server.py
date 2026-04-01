@@ -151,7 +151,8 @@ class UserView(web.View):
         if "password" in json_data:
             user.password = hash_password(json_data["password"])
 
-        await add_user(self.session, user)
+        # await add_user(self.session, user)
+        await self.session.commit()
         return json_response(user.id_dict)
 
     async def delete(self):
@@ -209,7 +210,8 @@ class AdvView(web.View):
         if "description" in json_data:
             adv.description = json_data["description"]
 
-        await add_adv(self.session, adv)
+        # await add_adv(self.session, adv)
+        await self.session.commit()
         return json_response(adv.id_dict)
 
     async def delete(self):
@@ -229,9 +231,12 @@ class LoginView(web.View):
 
     async def get_user_by_name(self, username: str) -> User | None:
         """Поиск пользователя по имени"""
-        return await self.request.session.scalar(
+        user = await self.request.session.scalar(
             select(User).where(User.name == username)
         )
+        if not user:
+            raise get_error("User is not found", web.HTTPNotFound)
+        return user
 
     async def post(self):
         json_data = await self.request.json()
@@ -266,4 +271,4 @@ app.add_routes(
     ]
 )
 
-web.run_app(app)
+web.run_app(app, port=8080)
