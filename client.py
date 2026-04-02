@@ -78,6 +78,20 @@ async def main():
 
         #################################################
 
+        print("##### Меняем свое объявление с пустыми параметрами ######")
+        response = await session.patch(
+            f"http://0.0.0.0:8080/advs/{adv_id_1}",
+            json={
+            },
+            headers={
+                "Authorization": f"Bearer {token_1}",
+            },
+        )
+        json_response = await response.json()
+        print(response.status, json_response, "\n")
+
+        #################################################
+
         print("##### Регистрируем второго пользователя ######")
         username_1 = f"{username}_1"
         password_1 = f"{password}_2"

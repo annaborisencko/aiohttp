@@ -204,6 +204,9 @@ class AdvView(web.View):
             raise get_error("You don't have permissions", web.HTTPForbidden)
 
         json_data = await self.request.json()
+        if not json_data:
+            return json_response({"status": "Не передано ни одного параметра, изменений не требуется"})
+
         if "title" in json_data:
             adv.title = json_data["title"]
         if "description" in json_data:
