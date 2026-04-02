@@ -232,7 +232,9 @@ class LoginView(web.View):
         user = await self.request.session.scalar(
             select(User).where(User.name == username)
         )
-        if not user or not verify_password(password, user.password):
+        if not user:
+            raise get_error("Bad login or password", web.HTTPUnauthorized)
+        if not verify_password(password, user.password):
             raise get_error("Bad login or password", web.HTTPUnauthorized)
         return user
 
@@ -241,7 +243,7 @@ class LoginView(web.View):
         username = json_data.get("name")
         password = json_data.get("password")
 
-        user = await self.get_user_by_name(username)
+        user = await self.get_user_by_name(username, password)
         token = generate_token(user.id)
 
         return json_response({"token": token, "token_type": "Bearer"})
