@@ -227,13 +227,13 @@ class AdvView(web.View):
 class LoginView(web.View):
     """Эндпоинт для получения токена"""
 
-    async def get_user_by_name(self, username: str) -> User | None:
+    async def get_user_by_name(self, username: str, password: str) -> User | None:
         """Поиск пользователя по имени"""
         user = await self.request.session.scalar(
             select(User).where(User.name == username)
         )
-        if not user:
-            raise get_error("User is not found", web.HTTPNotFound)
+        if not user or not verify_password(password, user.password):
+            raise get_error("Bad login or password", web.HTTPUnauthorized)
         return user
 
     async def post(self):
@@ -242,10 +242,6 @@ class LoginView(web.View):
         password = json_data.get("password")
 
         user = await self.get_user_by_name(username)
-
-        if not verify_password(password, user.password):
-            raise get_error("Bad login or password", web.HTTPUnauthorized)
-
         token = generate_token(user.id)
 
         return json_response({"token": token, "token_type": "Bearer"})
