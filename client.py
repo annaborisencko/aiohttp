@@ -170,7 +170,6 @@ async def main():
         )
 
         json_response = await response.json()
-        token_2 = json_response.get("token")
         print(response.status, json_response, "\n")
 
         #################################################
@@ -183,7 +182,6 @@ async def main():
         )
 
         json_response = await response.json()
-        token_2 = json_response.get("token")
         print(response.status, json_response, "\n")
 
         #################################################

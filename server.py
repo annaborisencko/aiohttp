@@ -234,6 +234,7 @@ class LoginView(web.View):
         )
         if not user:
             raise get_error("Bad login or password", web.HTTPUnauthorized)
+            
         if not verify_password(password, user.password):
             raise get_error("Bad login or password", web.HTTPUnauthorized)
         return user
